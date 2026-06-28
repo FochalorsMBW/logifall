@@ -1,0 +1,22 @@
+# Render Blueprint — https://render.com/docs/blueprint-spec
+# Deploy: push this repo to GitHub, then in Render: New + > Blueprint,
+# pick the repo. Render reads this file and creates the service.
+# After it's created, set GROQ_API_KEY in the service's Environment tab.
+services:
+  - type: web
+    name: logifall
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false # set manually in the Render dashboard (kept secret)
+      - key: NODE_VERSION
+        value: 20.18.0
+      # GROQ_MODEL is optional; uncomment to override the default model.
+      # - key: GROQ_MODEL
+      #   value: llama-3.3-70b-versatile

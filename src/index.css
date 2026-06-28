@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply font-sans;
+  }
+}
+
+/* Thin, restrained scrollbars to keep the editorial feel */
+@layer utilities {
+  .scrollbar-slim::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scrollbar-slim::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-stone-300 dark:bg-stone-700;
+  }
+  .scrollbar-slim::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  /* Small-caps editorial label */
+  .label-caps {
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+}
