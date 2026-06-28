@@ -73,6 +73,10 @@ Browser (App.jsx)  ──POST /api/analyze──▶  server.js (Express)
 - The analysis follows the language of the input text (e.g. Indonesian in,
   Indonesian out).
 
+The request handling logic lives in `api/_shared.js` and is reused by both
+runtimes: `server.js` (Express, for local dev and Node hosts) and the Vercel
+serverless functions in `api/` (`analyze.js`, `rewrite.js`, `health.js`).
+
 ### Rewrite suggestions
 
 `POST /api/rewrite` takes `{ text, style, fallacies? }` and returns
@@ -88,6 +92,23 @@ fallacies, in the chosen writing style (`formal`, `akademik`, `santai`,
 | `GROQ_API_KEY` | _(required)_               | Server-side Groq key        |
 | `GROQ_MODEL`   | `llama-3.3-70b-versatile`  | Model used for analysis     |
 | `PORT`         | `3001`                     | Port for the Express server |
+
+## Deployment (Vercel)
+
+The frontend builds to static assets and the three endpoints run as Vercel
+serverless functions (`api/`). No credit card is required on the Hobby tier.
+
+1. Push the repo to GitHub.
+2. On https://vercel.com → **Add New… → Project**, import the repo.
+3. Vercel auto-detects Vite (`vercel.json` makes it explicit). Leave the
+   defaults.
+4. Add an environment variable **`GROQ_API_KEY`** (your `gsk_...` key) under
+   **Settings → Environment Variables**.
+5. Deploy. The site is served at `https://<project>.vercel.app`, with the API
+   at `/api/*`.
+
+`server.js` is only used for local development and Node hosts (e.g. Render);
+Vercel ignores it and serves `api/` functions instead.
 
 ## Disclaimer
 
